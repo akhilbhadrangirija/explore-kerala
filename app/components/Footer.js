@@ -54,7 +54,7 @@ export function Footer() {
               <div className="flex items-start space-x-3">
                 <MapPin className="h-5 w-5 text-green-400 mt-1" />
                 <span className="text-gray-300">
-                  Kochi, Kerala, India<br />
+                  {`Trivandrum, Kerala, India`}<br />
                   Pin: 682001
                 </span>
               </div>
@@ -64,7 +64,7 @@ export function Footer() {
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center">
           <p className="text-gray-400">
-            © 2024 Explore My Kerala. All rights reserved. | 
+            {`© 2024 Explore My Kerala. All rights reserved. | `}
             <a href="/privacy" className="hover:text-green-400 transition-colors ml-1">Privacy Policy</a> | 
             <a href="/terms" className="hover:text-green-400 transition-colors ml-1">Terms of Service</a>
           </p>
