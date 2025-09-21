@@ -149,7 +149,7 @@ export default function ItineraryDetailPage({ params }) {
               >
                 Book Now on WhatsApp
               </button>
-              <div className="bg-white bg-opacity-20 text-white px-8 py-3 rounded-lg text-lg font-semibold">
+              <div className=" bg-white text-green-600 px-8 py-3 rounded-lg text-lg font-semibold">
                 {itinerary.price ? `₹${itinerary.price}` : 'Contact for Price'}
               </div>
             </div>
