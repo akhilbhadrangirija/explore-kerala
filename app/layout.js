@@ -37,7 +37,7 @@ export const metadata = {
     description: "Experience the authentic beauty of Kerala with our curated travel packages. From serene backwaters to misty hill stations, discover the best of God's Own Country.",
     images: [
       {
-        url: '/backwaters.jpg',
+        url: '/metaimage.jpg',
         width: 1200,
         height: 630,
         alt: 'Kerala Backwaters - Explore My Kerala',
@@ -50,7 +50,7 @@ export const metadata = {
     creator: '@exploremykerala',
     title: "Explore My Kerala - Discover God's Own Country",
     description: "Experience the authentic beauty of Kerala with our curated travel packages.",
-    images: ['/backwaters.jpg'],
+    images: ['/metaimage.jpg'],
   },
   robots: {
     index: true,
