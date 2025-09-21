@@ -8,12 +8,15 @@ import { Calendar, MapPin, Clock, Users, Star, CheckCircle, ArrowLeft, Loader2 }
 import Link from 'next/link';
 import { db } from '../../lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
+import { ImageZoomModal } from '../../../components/ui/image-zoom-modal';
 
 export default function ItineraryDetailPage({ params }) {
   const resolvedParams = React.use(params);
   const [itinerary, setItinerary] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const fetchPackage = async () => {
@@ -34,6 +37,7 @@ export default function ItineraryDetailPage({ params }) {
         }
 
         const packageData = packageSnap.data();
+        console.log('packageData', packageData);
         setItinerary({
           id: packageSnap.id,
           ...packageData
@@ -52,8 +56,21 @@ export default function ItineraryDetailPage({ params }) {
   const handleWhatsAppClick = () => {
     if (!itinerary) return;
     const message = `Hello, I'm interested in booking the ${itinerary.title} package from Explore My Kerala.`;
-    const whatsappUrl = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleImageClick = (index) => {
+    setCurrentImageIndex(index);
+    setIsImageModalOpen(true);
+  };
+
+  const handleCloseImageModal = () => {
+    setIsImageModalOpen(false);
+  };
+
+  const handleImageIndexChange = (index) => {
+    setCurrentImageIndex(index);
   };
 
   if (isLoading) {
@@ -116,7 +133,7 @@ export default function ItineraryDetailPage({ params }) {
           fill
           className="object-cover"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white px-4 max-w-4xl">
             <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
@@ -199,18 +216,40 @@ export default function ItineraryDetailPage({ params }) {
             {/* Image Gallery */}
             <div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Photo Gallery</h3>
-              <div className="grid grid-cols-2 gap-4">
-                {(itinerary.images || itinerary.gallery || []).map((image, index) => (
-                  <div key={index} className="relative h-48 rounded-lg overflow-hidden">
-                    <Image
-                      src={image}
-                      alt={`${itinerary.title} - Image ${index + 1}`}
-                      fill
-                      className="object-cover hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                ))}
-              </div>
+              {(itinerary.images && itinerary.images.length > 0) || (itinerary.gallery && itinerary.gallery.length > 0) ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {(itinerary.images || itinerary.gallery || []).map((image, index) => (
+                    <div 
+                      key={index} 
+                      className="relative h-48 rounded-lg overflow-hidden group cursor-pointer"
+                      onClick={() => handleImageClick(index)}
+                    >
+                      <Image
+                        src={image}
+                        alt={`${itinerary.title} - Image ${index + 1}`}
+                        fill
+                        className="object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300 flex items-center justify-center">
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="bg-white bg-opacity-90 rounded-full p-2">
+                            <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">
+                  <svg className="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <p>No gallery images available for this package.</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -300,6 +339,15 @@ export default function ItineraryDetailPage({ params }) {
       </section>
 
       <Footer />
+
+      {/* Image Zoom Modal */}
+      <ImageZoomModal
+        isOpen={isImageModalOpen}
+        onClose={handleCloseImageModal}
+        images={itinerary?.images || itinerary?.gallery || []}
+        currentIndex={currentImageIndex}
+        onIndexChange={handleImageIndexChange}
+      />
     </div>
   );
 }
