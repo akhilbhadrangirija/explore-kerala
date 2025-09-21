@@ -7,30 +7,6 @@ export const metadata = {
   title: "About Us - Explore My Kerala | Local Travel Experts in God's Own Country",
   description: "Learn about Explore My Kerala's mission to showcase authentic Kerala experiences. Born from local expertise, we provide sustainable, memorable travel experiences that support local communities.",
   keywords: "about Explore My Kerala, local travel experts, Kerala travel company, authentic Kerala experiences, sustainable tourism, local expertise, God's Own Country",
-  openGraph: {
-    title: "About Explore My Kerala - Local Travel Experts",
-    description: "Learn about our mission to showcase authentic Kerala experiences through sustainable tourism and local expertise.",
-    type: "website",
-    locale: "en_US",
-    siteName: "Explore My Kerala",
-    images: [
-      {
-        url: "/munnar.jpg",
-        width: 1200,
-        height: 630,
-        alt: "About Explore My Kerala - Local Travel Experts",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "About Explore My Kerala - Local Travel Experts",
-    description: "Learn about our mission to showcase authentic Kerala experiences through sustainable tourism.",
-    images: ["/munnar.jpg"],
-  },
-  alternates: {
-    canonical: "https://exploremykerala.com/about",
-  },
   robots: {
     index: true,
     follow: true,
