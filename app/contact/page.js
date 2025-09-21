@@ -25,7 +25,7 @@ export default function ContactPage() {
     e.preventDefault();
     // In production, this would send the form data to your backend
     const message = `Name: ${formData.name}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nSubject: ${formData.subject}\nMessage: ${formData.message}`;
-    const whatsappUrl = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
@@ -99,7 +99,7 @@ export default function ContactPage() {
                       value={formData.phone}
                       onChange={handleInputChange}
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                      placeholder="+91 98765 43210"
+                      placeholder={`+${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}`}
                     />
                   </div>
                   <div>
@@ -161,7 +161,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Phone</h3>
-                    <p className="text-gray-600 mb-2">+91 98765 43210</p>
+                    <p className="text-gray-600 mb-2">+{process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}</p>
                     <p className="text-gray-600">+91 484 123 4567</p>
                   </div>
                 </div>
@@ -215,7 +215,7 @@ export default function ContactPage() {
                   For immediate assistance, message us on WhatsApp. We typically respond within minutes.
                 </p>
                 <a
-                  href="https://wa.me/919876543210?text=Hello, I'm interested in booking a Kerala tour package."
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello, I'm interested in booking a Kerala tour package.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200"
@@ -229,16 +229,25 @@ export default function ContactPage() {
       </section>
 
       {/* Map Section */}
-      {/* <section className="py-16 bg-gray-100">
+      <section className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Find Us</h2>
           <div className="bg-white rounded-lg shadow-lg overflow-hidden">
             <div className="h-96 bg-gray-200 flex items-center justify-center">
-              <p className="text-gray-500">Interactive map would be embedded here</p>
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3945.7452057545843!2d76.9366!3d8.5241!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b05bbb805bbcd47%3A0x15439fab5c5c81cb!2sThiruvananthapuram%2C%20Kerala!5e0!3m2!1sen!2sin!4v1758437696574!5m2!1sen!2sin"
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: '24rem', width: '100%' }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Explore My Kerala Location"
+              ></iframe>
             </div>
           </div>
         </div>
-      </section> */}
+      </section>
 
       <Footer />
     </div>
