@@ -1,4 +1,5 @@
 import { MapPin, Phone, Mail, Facebook, Instagram, Twitter } from 'lucide-react';
+import Link from 'next/link';
 
 export function Footer() {
   return (
@@ -12,7 +13,7 @@ export function Footer() {
               <span className="text-2xl font-bold">Explore My Kerala</span>
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
-              Discover the beauty of God's Own Country with our curated travel experiences. 
+              Discover the beauty of God&apos;s Own Country with our curated travel experiences. 
               From serene backwaters to misty hill stations, we bring you the best of Kerala.
             </p>
             <div className="flex space-x-4">
@@ -32,10 +33,10 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><a href="/" className="text-gray-300 hover:text-green-400 transition-colors">Home</a></li>
-              <li><a href="/packages" className="text-gray-300 hover:text-green-400 transition-colors">Packages</a></li>
-              <li><a href="/about" className="text-gray-300 hover:text-green-400 transition-colors">About Us</a></li>
-              <li><a href="/contact" className="text-gray-300 hover:text-green-400 transition-colors">Contact</a></li>
+              <li><Link href="/" className="text-gray-300 hover:text-green-400 transition-colors">Home</Link></li>
+              <li><Link href="/packages" className="text-gray-300 hover:text-green-400 transition-colors">Packages</Link></li>
+              <li><Link href="/about" className="text-gray-300 hover:text-green-400 transition-colors">About Us</Link></li>
+              <li><Link href="/contact" className="text-gray-300 hover:text-green-400 transition-colors">Contact</Link></li>
             </ul>
           </div>
 

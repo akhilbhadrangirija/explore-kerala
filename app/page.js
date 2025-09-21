@@ -8,6 +8,7 @@ import { ItineraryCard } from './components/ItineraryCard';
 import { MapPin, Star, Users, Shield, Loader2 } from 'lucide-react';
 import { db } from './lib/firebase';
 import { collection, query, where, orderBy, limit, onSnapshot } from 'firebase/firestore';
+import Link from 'next/link';
 
 export default function Home() {
   const [featuredPackages, setFeaturedPackages] = useState([]);
@@ -57,10 +58,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose Explore My Kerala?
+              {`Why Choose Explore My Kerala?`}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              We provide authentic, memorable experiences that showcase the true beauty of God's Own Country.
+              {`We provide authentic, memorable experiences that showcase the true beauty of God&apos;s Own Country.`}
             </p>
           </div>
           
@@ -108,7 +109,7 @@ export default function Home() {
               Featured Travel Packages
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover our carefully curated itineraries designed to showcase the best of Kerala's natural beauty and cultural heritage.
+              {`Discover our carefully curated itineraries designed to showcase the best of Kerala&apos;s natural beauty and cultural heritage.`}
             </p>
           </div>
           
@@ -128,12 +129,12 @@ export default function Home() {
               </div>
               
               <div className="text-center mt-12">
-                <a
+                <Link
                   href="/packages"
                   className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition-colors duration-200 inline-block"
                 >
                   View All Packages
-                </a>
+                </Link>
               </div>
             </>
           )}
@@ -147,7 +148,7 @@ export default function Home() {
             Ready to Explore Kerala?
           </h2>
           <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
-            Let us create the perfect Kerala experience for you. Contact us today to start planning your dream vacation.
+            {`Let us create the perfect Kerala experience for you. Contact us today to start planning your dream vacation.`}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

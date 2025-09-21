@@ -15,8 +15,8 @@ export default function AboutPage() {
             About Explore My Kerala
           </h1>
           <p className="text-xl text-green-100 max-w-3xl mx-auto">
-            Born from a deep love for our homeland, we're passionate about sharing 
-            the authentic beauty and culture of God's Own Country with the world.
+            {`Born from a deep love for our homeland, we&apos;re passionate about sharing 
+            the authentic beauty and culture of God&apos;s Own Country with the world.`}
           </p>
         </div>
       </section>
@@ -29,19 +29,19 @@ export default function AboutPage() {
               <h2 className="text-3xl font-bold text-gray-900 mb-6">Our Story</h2>
               <div className="space-y-4 text-lg text-gray-600">
                 <p>
-                  Explore My Kerala was born from a simple yet profound love for our homeland. 
+                  {`Explore My Kerala was born from a simple yet profound love for our homeland. 
                   As natives of Kerala, we grew up surrounded by the breathtaking beauty of 
-                  backwaters, misty hills, pristine beaches, and rich cultural heritage.
+                  backwaters, misty hills, pristine beaches, and rich cultural heritage.`}
                 </p>
                 <p>
-                  What started as a passion to share our local knowledge with friends and family 
+                  {`What started as a passion to share our local knowledge with friends and family 
                   has evolved into a full-service travel company dedicated to providing authentic, 
-                  immersive experiences that showcase the true essence of Kerala.
+                  immersive experiences that showcase the true essence of Kerala.`}
                 </p>
                 <p>
-                  We believe that travel should be more than just sightseeing – it should be 
+                  {`We believe that travel should be more than just sightseeing – it should be 
                   about connecting with local communities, understanding different cultures, 
-                  and creating memories that last a lifetime.
+                  and creating memories that last a lifetime.`}
                 </p>
               </div>
             </div>
@@ -67,9 +67,9 @@ export default function AboutPage() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Mission</h3>
               <p className="text-lg text-gray-600">
-                To provide authentic, sustainable, and memorable travel experiences that 
+                {`To provide authentic, sustainable, and memorable travel experiences that 
                 showcase the natural beauty, rich culture, and warm hospitality of Kerala 
-                while supporting local communities and preserving our heritage.
+                while supporting local communities and preserving our heritage.`}
               </p>
             </div>
             <div className="text-center">
@@ -78,9 +78,9 @@ export default function AboutPage() {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Vision</h3>
               <p className="text-lg text-gray-600">
-                To be the leading travel company that helps people discover the authentic 
+                {`To be the leading travel company that helps people discover the authentic 
                 Kerala experience, fostering cultural exchange and sustainable tourism 
-                that benefits both travelers and local communities.
+                that benefits both travelers and local communities.`}
               </p>
             </div>
           </div>
@@ -98,8 +98,8 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Authenticity</h3>
               <p className="text-gray-600">
-                We provide genuine experiences that reflect the real Kerala, 
-                not tourist traps or commercialized attractions.
+                {`We provide genuine experiences that reflect the real Kerala, 
+                not tourist traps or commercialized attractions.`}
               </p>
             </div>
             <div className="text-center">
@@ -108,8 +108,8 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Sustainability</h3>
               <p className="text-gray-600">
-                We promote responsible tourism that protects the environment 
-                and supports local communities for future generations.
+                {`We promote responsible tourism that protects the environment 
+                and supports local communities for future generations.`}
               </p>
             </div>
             <div className="text-center">
@@ -118,8 +118,8 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">Excellence</h3>
               <p className="text-gray-600">
-                We strive for the highest standards in service, safety, 
-                and customer satisfaction in everything we do.
+                {`We strive for the highest standards in service, safety, 
+                and customer satisfaction in everything we do.`}
               </p>
             </div>
           </div>
@@ -221,7 +221,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Local Expertise</h3>
               <p className="text-gray-600 text-sm">
-                Born and raised in Kerala, we know the hidden gems and authentic experiences.
+                {`Born and raised in Kerala, we know the hidden gems and authentic experiences.`}
               </p>
             </div>
             <div className="text-center">
@@ -239,7 +239,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Safety First</h3>
               <p className="text-gray-600 text-sm">
-                Fully insured tours with 24/7 support and comprehensive safety protocols.
+                {`Fully insured tours with 24/7 support and comprehensive safety protocols.`}
               </p>
             </div>
             <div className="text-center">
@@ -248,7 +248,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Passionate Service</h3>
               <p className="text-gray-600 text-sm">
-                We're passionate about sharing Kerala's beauty and creating unforgettable memories.
+               {`We&apos;re passionate about sharing Kerala&apos;s beauty and creating unforgettable memories.`}
               </p>
             </div>
           </div>

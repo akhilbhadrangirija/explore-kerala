@@ -41,7 +41,7 @@ export default function ContactPage() {
           </h1>
           <p className="text-xl text-green-100 max-w-3xl mx-auto">
             Have questions about our packages? Want to customize your Kerala experience? 
-            We're here to help you plan the perfect trip.
+            We&apos;re here to help you plan the perfect trip.
           </p>
         </div>
       </section>

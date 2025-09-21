@@ -287,7 +287,7 @@ export default function ItineraryDetailPage({ params }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">What's Included</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">What&apos;s Included</h3>
               <ul className="space-y-3">
                 {(itinerary.includes || []).map((item, index) => (
                   <li key={index} className="flex items-start space-x-3">
@@ -298,7 +298,7 @@ export default function ItineraryDetailPage({ params }) {
               </ul>
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">What's Not Included</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">What&apos;s Not Included</h3>
               <ul className="space-y-3">
                 {(itinerary.excludes || []).map((item, index) => (
                   <li key={index} className="flex items-start space-x-3">

@@ -173,10 +173,10 @@ export default function PackagesPage() {
       <section className="py-16 bg-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Can't Find What You're Looking For?
+            Can&apos;t Find What You&apos;re Looking For?
           </h2>
           <p className="text-xl text-green-100 mb-8 max-w-3xl mx-auto">
-            We can create a custom itinerary just for you. Tell us your preferences and we'll design the perfect Kerala experience.
+            We can create a custom itinerary just for you. Tell us your preferences and we&apos;ll design the perfect Kerala experience.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a

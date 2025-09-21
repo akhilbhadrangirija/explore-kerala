@@ -557,7 +557,7 @@ export default function NewPackagePage() {
           {/* Includes & Excludes */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-white shadow rounded-lg p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-6">What's Included</h2>
+              <h2 className="text-lg font-medium text-gray-900 mb-6">What&apos;s Included</h2>
               <div className="space-y-3">
                 {formData.includes.map((item, index) => (
                   <div key={index} className="flex space-x-2">
@@ -588,7 +588,7 @@ export default function NewPackagePage() {
             </div>
 
             <div className="bg-white shadow rounded-lg p-6">
-              <h2 className="text-lg font-medium text-gray-900 mb-6">What's Not Included</h2>
+              <h2 className="text-lg font-medium text-gray-900 mb-6">What&apos;s Not Included</h2>
               <div className="space-y-3">
                 {formData.excludes.map((item, index) => (
                   <div key={index} className="flex space-x-2">
