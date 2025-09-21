@@ -7,6 +7,10 @@ import { storage, db, auth } from '../../../lib/firebase';
 import { ref, uploadBytesResumable, getDownloadURL, uploadBytes } from 'firebase/storage';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { signInAnonymously } from 'firebase/auth';
+import { FileInput } from '../../../../components/ui/file-input';
+import { GalleryFileInput } from '../../../../components/ui/gallery-file-input';
+import { useToast } from '../../../../components/ui/toast';
+import { uploadImageToCloudinary } from '../../../lib/cloudinary';
 
 export default function NewPackagePage() {
   const [formData, setFormData] = useState({
@@ -23,12 +27,16 @@ export default function NewPackagePage() {
     itinerary: [{ day: 1, title: '', activities: [''] }],
     includes: [''],
     excludes: [''],
-    images: []
+    image: '', // Cover image
+    images: [] // Gallery images
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryUploadProgress, setGalleryUploadProgress] = useState(0);
   const router = useRouter();
+  const { success, error, info } = useToast();
 
   useEffect(() => {
     // Check authentication
@@ -47,48 +55,91 @@ export default function NewPackagePage() {
     }));
   };
 
-  const handleCoverImageSelect = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      if (!auth.currentUser) {
-        await signInAnonymously(auth);
-      }
-    } catch (err) {
-      console.error('Auth error before upload:', err);
-      alert('Unable to initialize upload (auth failed). Please try again.');
+  const handleCoverImageSelect = async (file) => {
+    if (!file) {
+      setFormData(prev => ({ ...prev, image: '' }));
       return;
     }
-    const path = `packages/covers/${Date.now()}-${file.name}`;
-    const storageRef = ref(storage, path);
-    const metadata = { contentType: file.type || 'application/octet-stream' };
-    const task = uploadBytesResumable(storageRef, file, metadata);
+
     setIsUploading(true);
     setUploadProgress(0);
-    task.on('state_changed', (snap) => {
-      const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-      setUploadProgress(pct);
-    }, async (err) => {
-      console.error('Resumable upload error:', err);
-      if (err?.code === 'storage/retry-limit-exceeded') {
-        try {
-          // Fallback to non-resumable upload
-          const snapshot = await uploadBytes(storageRef, file, metadata);
-          const url = await getDownloadURL(snapshot.ref);
-          setFormData(prev => ({ ...prev, image: url }));
-          setIsUploading(false);
-          return;
-        } catch (fallbackErr) {
-          console.error('Fallback upload error:', fallbackErr);
-        }
+
+    try {
+      // Simulate progress for better UX
+      const progressInterval = setInterval(() => {
+        setUploadProgress(prev => {
+          if (prev >= 90) {
+            clearInterval(progressInterval);
+            return prev;
+          }
+          return prev + Math.random() * 10;
+        });
+      }, 200);
+
+      const result = await uploadImageToCloudinary(file, `packages/covers/new-${Date.now()}`);
+      
+      clearInterval(progressInterval);
+      setUploadProgress(100);
+
+      if (result.success) {
+        setFormData(prev => ({ ...prev, image: result.url }));
+        success('Cover image uploaded successfully');
+      } else {
+        error(`Upload failed: ${result.error}`);
       }
+    } catch (err) {
+      console.error('Upload error:', err);
+      error('Failed to upload cover image');
+    } finally {
       setIsUploading(false);
-      alert(`Failed to upload image${err?.code ? ` (${err.code})` : ''}`);
-    }, async () => {
-      const url = await getDownloadURL(task.snapshot.ref);
-      setFormData(prev => ({ ...prev, image: url }));
-      setIsUploading(false);
-    });
+    }
+  };
+
+  const handleGalleryImagesSelect = async (files) => {
+    if (!files || files.length === 0) return;
+
+    setGalleryUploading(true);
+    setGalleryUploadProgress(0);
+    const uploadedUrls = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      
+      try {
+        const result = await uploadImageToCloudinary(file, `packages/gallery/new-${Date.now()}-${i}`);
+        
+        if (result.success) {
+          uploadedUrls.push(result.url);
+          const totalProgress = Math.round(((i + 1) * 100) / files.length);
+          setGalleryUploadProgress(totalProgress);
+        } else {
+          console.error(`Failed to upload file ${i + 1}:`, result.error);
+          error(`Failed to upload image ${i + 1}. Please try again.`);
+          setGalleryUploading(false);
+          return;
+        }
+      } catch (err) {
+        console.error(`Failed to upload file ${i + 1}:`, err);
+        error(`Failed to upload image ${i + 1}. Please try again.`);
+        setGalleryUploading(false);
+        return;
+      }
+    }
+
+    setFormData(prev => ({ 
+      ...prev, 
+      images: [...prev.images, ...uploadedUrls] 
+    }));
+    success(`${uploadedUrls.length} gallery images uploaded successfully`);
+    setGalleryUploading(false);
+    setGalleryUploadProgress(0);
+  };
+
+  const removeGalleryImage = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
   };
 
   const handleArrayInputChange = (field, index, value) => {
@@ -164,7 +215,7 @@ export default function NewPackagePage() {
     try {
       // Basic validation
       if (!formData.title || !formData.duration || !formData.location || !formData.description) {
-        alert('Please fill in all required fields.');
+        error('Please fill in all required fields.');
         setIsLoading(false);
         return;
       }
@@ -200,6 +251,7 @@ export default function NewPackagePage() {
         includes: normalizedIncludes,
         excludes: normalizedExcludes,
         image: formData.image || '',
+        images: formData.images || [],
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       };
@@ -207,10 +259,13 @@ export default function NewPackagePage() {
       const colRef = collection(db, 'packages');
       const docRef = await addDoc(colRef, payload);
       console.log('Package created with ID:', docRef.id);
-      router.push('/admin/dashboard');
+      success('Package created successfully!');
+      setTimeout(() => {
+        router.push('/admin/dashboard');
+      }, 1500);
     } catch (err) {
       console.error('Failed to save package:', err);
-      alert('Failed to save package. Please try again.');
+      error('Failed to save package. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -333,27 +388,32 @@ export default function NewPackagePage() {
                 </select>
               </div>
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Cover Image
-                </label>
-                <div className="flex items-center space-x-4">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleCoverImageSelect}
-                    className="block w-full text-sm text-gray-700"
-                  />
-                  {isUploading ? (
-                    <span className="text-sm text-gray-600">Uploading {uploadProgress}%</span>
-                  ) : null}
-                </div>
-                {formData.image ? (
-                  <div className="mt-3">
-                    <img src={formData.image} alt="Cover preview" className="h-40 w-full object-cover rounded" />
-                  </div>
-                ) : null}
+                <FileInput
+                  onFileSelect={handleCoverImageSelect}
+                  value={formData.image}
+                  accept="image/*"
+                  maxSize={5 * 1024 * 1024}
+                  disabled={isUploading}
+                  isUploading={isUploading}
+                  uploadProgress={uploadProgress}
+                />
               </div>
             </div>
+          </div>
+
+          {/* Gallery Images */}
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-lg font-medium text-gray-900 mb-6">Gallery Images</h2>
+            <GalleryFileInput
+              onFilesSelect={handleGalleryImagesSelect}
+              onImageRemove={removeGalleryImage}
+              value={formData.images}
+              accept="image/*"
+              maxSize={5 * 1024 * 1024}
+              disabled={galleryUploading}
+              isUploading={galleryUploading}
+              uploadProgress={galleryUploadProgress}
+            />
           </div>
 
           {/* Descriptions */}
