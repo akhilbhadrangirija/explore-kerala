@@ -180,7 +180,7 @@ export default function PackagesPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://wa.me/919876543210?text=Hello, I'm interested in a custom Kerala tour package."
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello, I'm interested in a custom Kerala tour package.`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-white text-green-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition-colors duration-200"

@@ -45,10 +45,10 @@ export function Header() {
           <div className="hidden lg:flex items-center space-x-4">
             <div className="flex items-center space-x-2 text-sm text-gray-600">
               <Phone className="h-4 w-4" />
-              <span>+91 98765 43210</span>
+              <span>+{process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}</span>
             </div>
             <Link
-              href="https://wa.me/919876543210?text=Hello, I'm interested in booking a Kerala tour package."
+              href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello, I'm interested in booking a Kerala tour package.`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm font-medium"
@@ -89,10 +89,10 @@ export function Header() {
               <div className="pt-4 border-t">
                 <div className="flex items-center space-x-2 text-sm text-gray-600 px-3 py-2">
                   <Phone className="h-4 w-4" />
-                  <span>+91 98765 43210</span>
+                  <span>+{process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}</span>
                 </div>
                 <Link
-                  href="https://wa.me/919876543210?text=Hello, I'm interested in booking a Kerala tour package."
+                  href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=Hello, I'm interested in booking a Kerala tour package.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 text-sm font-medium block mx-3 mt-2"

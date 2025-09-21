@@ -9,7 +9,7 @@ export function ItineraryCard({ itinerary }) {
     e.preventDefault();
     e.stopPropagation();
     const message = `Hello, I'm interested in booking the ${itinerary.title} package from Explore My Kerala.`;
-    const whatsappUrl = `https://wa.me/919876543210?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
   };
 
