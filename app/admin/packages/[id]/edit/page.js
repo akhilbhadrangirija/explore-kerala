@@ -7,6 +7,8 @@ import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../../../lib/firebase';
 import { auth as simpleAuth } from '../../../../lib/auth';
 import { FileInput } from '../../../../../components/ui/file-input';
+import { GalleryFileInput } from '../../../../../components/ui/gallery-file-input';
+import { useToast } from '../../../../../components/ui/toast';
 import { uploadImageToCloudinary } from '../../../../lib/cloudinary';
 
 export default function EditPackagePage() {
@@ -18,8 +20,11 @@ export default function EditPackagePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [galleryUploading, setGalleryUploading] = useState(false);
+  const [galleryUploadProgress, setGalleryUploadProgress] = useState(0);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const { success: toastSuccess, error: toastError, info: toastInfo } = useToast();
 
   const [form, setForm] = useState({
     title: '',
@@ -166,9 +171,10 @@ export default function EditPackagePage() {
         images: form.images,
         updatedAt: serverTimestamp(),
       });
-      setSuccess('Package updated successfully');
+      toastSuccess('Package updated successfully');
     } catch (e) {
-      setError('Failed to update package');
+      console.error('Failed to update package:', e);
+      toastError('Failed to update package');
     } finally {
       setIsSaving(false);
     }
@@ -203,16 +209,64 @@ export default function EditPackagePage() {
 
       if (result.success) {
         setForm((prev) => ({ ...prev, image: result.url }));
-        setSuccess('Image uploaded successfully to Cloudinary');
+        toastSuccess('Cover image uploaded successfully');
       } else {
-        setError(`Upload failed: ${result.error}`);
+        toastError(`Upload failed: ${result.error}`);
       }
-    } catch (error) {
-      console.error('Upload error:', error);
-      setError('Failed to upload image');
+    } catch (err) {
+      console.error('Upload error:', err);
+      toastError('Failed to upload cover image');
     } finally {
       setIsUploading(false);
     }
+  };
+
+  const handleGalleryImagesSelect = async (files) => {
+    if (!files || files.length === 0) return;
+
+    setGalleryUploading(true);
+    setGalleryUploadProgress(0);
+    setError('');
+
+    const uploadedUrls = [];
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        const result = await uploadImageToCloudinary(file, `packages/gallery/${id}-${Date.now()}-${i}`);
+        
+        if (result.success) {
+          uploadedUrls.push(result.url);
+          const totalProgress = Math.round(((i + 1) * 100) / files.length);
+          setGalleryUploadProgress(totalProgress);
+        } else {
+          console.error(`Failed to upload file ${i + 1}:`, result.error);
+          toastError(`Failed to upload image ${i + 1}. Please try again.`);
+          setGalleryUploading(false);
+          return;
+        }
+      }
+
+      setForm(prev => ({ 
+        ...prev, 
+        images: [...prev.images, ...uploadedUrls] 
+      }));
+      toastSuccess(`${uploadedUrls.length} gallery images uploaded successfully`);
+    } catch (err) {
+      console.error('Gallery upload error:', err);
+      toastError('Failed to upload gallery images');
+    } finally {
+      setGalleryUploading(false);
+      setGalleryUploadProgress(0);
+    }
+  };
+
+  const removeGalleryImage = (index) => {
+    setForm(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
   };
 
   if (isLoading) {
@@ -228,15 +282,9 @@ export default function EditPackagePage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-gray-900">Edit Package</h1>
-          <Link href="/admin/packages" className="text-green-600 hover:text-green-700">Back to Packages</Link>
+          <Link href="/admin/dashboard" className="text-green-600 hover:text-green-700">Back to Packages</Link>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 rounded bg-red-50 text-red-700 border border-red-200">{error}</div>
-        )}
-        {success && (
-          <div className="mb-4 p-3 rounded bg-green-50 text-green-700 border border-green-200">{success}</div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Basic Information */}
@@ -346,6 +394,21 @@ export default function EditPackagePage() {
                  />
                </div>
             </div>
+          </div>
+
+          {/* Gallery Images */}
+          <div className="bg-white shadow rounded-lg p-6">
+            <h2 className="text-lg font-medium text-gray-900 mb-6">Gallery Images</h2>
+            <GalleryFileInput
+              onFilesSelect={handleGalleryImagesSelect}
+              onImageRemove={removeGalleryImage}
+              value={form.images}
+              accept="image/*"
+              maxSize={5 * 1024 * 1024}
+              disabled={galleryUploading}
+              isUploading={galleryUploading}
+              uploadProgress={galleryUploadProgress}
+            />
           </div>
 
           {/* Descriptions */}
